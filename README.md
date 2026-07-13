@@ -64,7 +64,6 @@ You can also use this playground with Visual Studio Code, the GitHub Copilot ext
 
 Sign in to GitHub from VS Code and confirm that Copilot Chat works before configuring Figma.
 
-
 Colleagues who use Visual Studio Code with GitHub Copilot can install the community [MCP Figma Extension](https://marketplace.visualstudio.com/items?itemName=SethFord.mcp-figma-extension). It offers guided MCP configuration, connection controls, testing, and companion Figma plugin instructions. Follow its marketplace documentation because it is a separate workflow from the your coding assistant remote MCP setup above.
 
 ### Troubleshoot your coding assistant and Figma
@@ -210,13 +209,21 @@ Link a smaller frame or individual component. Large pages and broad requests con
 
 ## Using design-system components
 
-The design system is registered as a Nuxt module in `nuxt.config.ts`:
+Independer's design system is registered as a Nuxt module in `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
   modules: ["independer-design-system"],
 });
 ```
+
+The module provides the following design tokens and utilities, (mostly) aligned with the DS2 version of the design system in Figma.
+
+- Components and their states
+- Colours
+- Typography
+- Breakpoints
+- Shadows
 
 Its components are auto-imported with the `Ind` prefix and can be used without explicit imports:
 
@@ -227,44 +234,13 @@ Its components are auto-imported with the `Ind` prefix and can be used without e
 </template>
 ```
 
-## Styling boundary
+By default the module registers the following components:
 
-Tailwind CSS is an implementation detail of the design system. The design-system module owns its Tailwind configuration, theme, generated utilities, and component source discovery.
+`IndButton`, `IndButtonToggle`, `IndDialog`, `IndModal`, `IndPill`, `IndFormCheckbox`, `IndFormInput`, `IndFormLabel`, `IndFormRadio`, `IndFormRow`, `IndFormFieldset`, `IndFormSelect`, `IndFormTabs`, and `IndFormTextarea`.
 
-The playground should therefore:
+For more information about `independer-design-system` see its [documentation](https://www.github.com/arjanvanrees/independer-design-system).
 
-- not register `@tailwindcss/vite`;
-- not import `tailwindcss` from application CSS;
-- not depend directly on `tailwindcss` or `@tailwindcss/vite`;
-- not use Tailwind utility classes in application templates;
-- use design-system components or regular scoped CSS for playground layout and presentation.
-
-The design-system stylesheet should restrict class discovery to its own component sources:
-
-```css
-@import "tailwindcss" source(none);
-@source "../components/**/*.{vue,js,ts}";
-```
-
-This keeps Tailwind out of the public contract and prevents consuming applications from accidentally depending on design-system tokens or utility classes.
-
-For playground-specific styles, use regular Vue scoped CSS:
-
-```vue
-<template>
-  <main class="playground">
-    <IndButton label="Verder" tone="filled-yellow" />
-  </main>
-</template>
-
-<style scoped>
-.playground {
-  max-width: 70rem;
-  margin-inline: auto;
-  padding: 2rem 1rem;
-}
-</style>
-```
+When a component style is missing, ask the maintainer of `independer-design-system` to add it. Do not create playground-specific overrides.
 
 ## Production build
 
@@ -299,5 +275,3 @@ After updating, run a production build and check the component examples in the b
 ```bash
 npm run build
 ```
-
-When a component style is missing, fix its source discovery or class definition in `independer-design-system` rather than adding a Tailwind safelist to this playground.
