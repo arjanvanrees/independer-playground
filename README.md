@@ -44,7 +44,7 @@ See [Figma's desktop MCP instructions](https://developers.figma.com/docs/figma-m
 Connect Codex to the running desktop server:
 
 ```bash
-codex mcp add figma-desktop --url http://127.0.0.1:3845/mcp
+codex mcp add figma --url http://127.0.0.1:3845/mcp
 ```
 
 Restart Codex if the newly configured tools do not appear. Select the intended frame or layer in Figma before prompting Codex.
@@ -71,7 +71,7 @@ Sign in to GitHub from VS Code and confirm that Copilot Chat works before config
 4. Run **MCP: Add Server**.
 5. Choose **HTTP**.
 6. Enter `http://127.0.0.1:3845/mcp`.
-7. Name the server `figma-desktop` and add it to this workspace.
+7. Name the server `figma` and add it to this workspace.
 
 The resulting workspace configuration should look similar to:
 
@@ -79,7 +79,7 @@ The resulting workspace configuration should look similar to:
 {
   "inputs": [],
   "servers": {
-    "figma-desktop": {
+    "figma": {
       "type": "http",
       "url": "http://127.0.0.1:3845/mcp"
     }
