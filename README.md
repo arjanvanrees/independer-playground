@@ -50,27 +50,6 @@ codex mcp add figma --url https://mcp.figma.com/mcp
 
 Complete the authentication flow when prompted, then start a new Codex session. You only need to configure the server once.
 
-### Give Codex Figma context
-
-The remote server is link-based:
-
-1. Open the design in Figma.
-2. Right-click the smallest relevant frame or layer.
-3. Choose **Copy link to selection**.
-4. Paste that URL into your Codex task and state what you want to analyse or implement.
-
-A link to a specific selection gives Codex clearer context than a link to an entire file. Your Figma account must have access to the linked design.
-
-```text
-Use the Figma MCP tools to inspect this frame: <FIGMA_URL>
-
-Implement it in this Nuxt and Vue 3 playground. Inspect the repository before
-editing. Reuse existing Ind components, do not add or use Tailwind in
-application code, and use minimal scoped CSS for layout. Preserve accessible
-labels, keyboard behavior and responsive behavior. Run npm run build and
-summarize the changed files when finished.
-```
-
 ### Visual Studio Code with GitHub Copilot
 
 You can also use this playground with Visual Studio Code, the GitHub Copilot extension, and Figma's MCP server.
@@ -86,16 +65,16 @@ You can also use this playground with Visual Studio Code, the GitHub Copilot ext
 Sign in to GitHub from VS Code and confirm that Copilot Chat works before configuring Figma.
 
 
-Colleagues who use Visual Studio Code with GitHub Copilot can install the community [MCP Figma Extension](https://marketplace.visualstudio.com/items?itemName=SethFord.mcp-figma-extension). It offers guided MCP configuration, connection controls, testing, and companion Figma plugin instructions. Follow its marketplace documentation because it is a separate workflow from the Codex remote MCP setup above.
+Colleagues who use Visual Studio Code with GitHub Copilot can install the community [MCP Figma Extension](https://marketplace.visualstudio.com/items?itemName=SethFord.mcp-figma-extension). It offers guided MCP configuration, connection controls, testing, and companion Figma plugin instructions. Follow its marketplace documentation because it is a separate workflow from the your coding assistant remote MCP setup above.
 
-### Troubleshoot Codex and Figma
+### Troubleshoot your coding assistant and Figma
 
-- If Figma tools do not appear, confirm that the Figma plugin is installed in Codex and start a new task.
+- If Figma tools do not appear, confirm that the Figma plugin is installed in your coding assistant and start a new task.
 - If authentication fails, reconnect the plugin and confirm that your Figma account can open the linked file.
 - If the wrong design is returned, use **Copy link to selection** on the intended frame or layer and paste the new URL.
 - If a large design is slow, link a smaller nested frame or individual component.
-- If Codex does not call Figma automatically, explicitly say “Use the Figma MCP tools” in the prompt.
-- If Codex proposes React or Tailwind, restate that the target is Nuxt with Vue 3, existing `Ind` components, and regular scoped CSS.
+- If your coding assistant does not call Figma automatically, explicitly say “Use the Figma MCP tools” in the prompt.
+- If your coding assistant proposes React or Tailwind, restate that the target is Nuxt with Vue 3, existing `Ind` components, and regular scoped CSS.
 
 ## Your first Figma-to-code experiment
 
@@ -103,10 +82,10 @@ Start small. A single component, form section, or mobile frame gives the agent c
 
 1. Run the playground with `npm run dev`.
 2. In Figma, copy the link to the relevant frame or layer.
-3. Open a Codex task for this repository, paste the URL, and ask it to inspect the linked selection.
+3. Open a your coding assistant task for this repository, paste the URL, and ask it to inspect the linked selection.
 4. State the target file, framework, and constraints explicitly.
-5. Ask Codex to inspect the repository and design before making changes.
-6. Let Codex implement and verify the result.
+5. Ask your coding assistant to inspect the repository and design before making changes.
+6. Let your coding assistant implement and verify the result.
 7. Review the changed files and the page in the browser.
 8. Continue with focused feedback rather than restarting with a broad prompt.
 
@@ -181,7 +160,7 @@ Good results depend more on clear context than on a long prompt. Include:
 - explicit boundaries, such as no new dependencies or no design-system edits;
 - the verification you expect, such as a build or browser comparison.
 
-Figma MCP supplies design context; Codex still writes and adapts the final code. It does not automatically understand team conventions unless they are present in the repository, expressed in the prompt, or mapped through [Figma Code Connect](https://developers.figma.com/docs/figma-mcp-server/code-connect-integration/).
+Figma MCP supplies design context; your coding assistant still writes and adapts the final code. It does not automatically understand team conventions unless they are present in the repository, expressed in the prompt, or mapped through [Figma Code Connect](https://developers.figma.com/docs/figma-mcp-server/code-connect-integration/).
 
 ## Vibe coding guardrails
 
@@ -201,9 +180,9 @@ If the agent starts changing too much, stop it and narrow the task. A good corre
 
 ## Troubleshooting Figma MCP
 
-### Codex cannot access the Figma file
+### Your coding assistant cannot access the Figma file
 
-- Confirm that the Figma plugin is installed and authenticated in Codex.
+- Confirm that the Figma plugin is installed and authenticated in your coding assistant.
 - Confirm that your Figma account has access to the linked file.
 - Paste a link to the specific frame or layer rather than only a screenshot.
 - Start a new task after installing or reconnecting the plugin.
@@ -216,11 +195,11 @@ If the agent starts changing too much, stop it and narrow the task. A good corre
 
 ### The output looks like React or Tailwind
 
-Figma context can resemble web or React code, but it is not the required output format. Tell Codex explicitly to implement the result in Nuxt and Vue 3, reuse `Ind` components, and avoid Tailwind in playground files.
+Figma context can resemble web or React code, but it is not the required output format. Tell your coding assistant explicitly to implement the result in Nuxt and Vue 3, reuse `Ind` components, and avoid Tailwind in playground files.
 
 ### The result does not match the design system
 
-- Ask Codex to inspect existing `Ind` component APIs before implementing.
+- Ask your coding assistant to inspect existing `Ind` component APIs before implementing.
 - Mention the exact component you expect it to reuse.
 - Check whether the Figma component is mapped through Code Connect.
 - Fix reusable component behavior in the design-system repository, not with playground-specific overrides.
