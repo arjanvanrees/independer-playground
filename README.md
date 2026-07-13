@@ -27,45 +27,31 @@ The playground is then available at [http://localhost:3000](http://localhost:300
 
 ## Connect Figma to your coding assistant
 
-Figma MCP gives your coding assistant structured context about frames, components, variables, layout, and assets. Figma recommends its remote MCP server because it does not require the desktop app and provides the broadest feature set.
+Figma MCP gives your coding assistant structured context about frames, components, variables, layout, and assets. This playground uses the desktop MCP server, which reads the current selection from the Figma desktop app.
+
+Before configuring your coding assistant:
+
+1. Install or update the [Figma desktop app](https://www.figma.com/downloads/).
+2. Open a Figma Design file.
+3. Enter Dev Mode with `Shift+D`.
+4. Enable the desktop MCP server from the MCP section of the inspect panel.
+5. Keep Figma open while working. The server runs at `http://127.0.0.1:3845/mcp`.
+
+See [Figma's desktop MCP instructions](https://developers.figma.com/docs/figma-mcp-server/local-server-installation/) if the controls or connection steps have changed.
 
 ### Codex
 
-#### Recommended: install the Figma plugin
-
-In the Codex app:
-
-1. Click **Plugins** in the upper-left corner.
-2. Click **+** next to Figma.
-3. Click **Install Figma**.
-4. Sign in to Figma and allow access.
-5. Start a new Codex task in this repository.
-
-See [Figma's remote MCP setup guide](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/) if the interface has changed or authentication fails.
-
-Codex CLI users can connect manually:
+Connect Codex to the running desktop server:
 
 ```bash
-codex mcp add figma --url https://mcp.figma.com/mcp
+codex mcp add figma-desktop --url http://127.0.0.1:3845/mcp
 ```
 
-Complete the authentication flow when prompted.
-
-#### Alternative: Figma desktop selection
-
-The desktop MCP server is useful when you want Codex to work from the currently selected Figma layer:
-
-1. Open the file in the latest Figma desktop app.
-2. Enter Dev Mode with `Shift+D`.
-3. Enable the desktop MCP server from the MCP section of the inspect panel.
-4. Connect your MCP client to `http://127.0.0.1:3845/mcp`.
-5. Keep Figma open and select the frame or layer you want to discuss.
-
-For most experiments, use the remote plugin and paste a link to a specific frame or layer instead. See [Figma's desktop MCP instructions](https://developers.figma.com/docs/figma-mcp-server/local-server-installation/) for client-specific setup.
+Restart Codex if the newly configured tools do not appear. Select the intended frame or layer in Figma before prompting Codex.
 
 ### Visual Studio Code with GitHub Copilot
 
-You can also use this playground with Visual Studio Code, the GitHub Copilot extension, and Figma's remote MCP server.
+You can also use this playground with Visual Studio Code, the GitHub Copilot extension, and Figma's desktop MCP server.
 
 #### Requirements
 
@@ -77,41 +63,42 @@ You can also use this playground with Visual Studio Code, the GitHub Copilot ext
 
 Sign in to GitHub from VS Code and confirm that Copilot Chat works before configuring Figma.
 
-#### Connect the remote Figma MCP server
+#### Connect the desktop Figma MCP server
 
 1. Open this repository as a folder in VS Code.
-2. Open the Command Palette with `Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows and Linux.
-3. Run **MCP: Open Workspace Folder MCP Configuration**.
-4. Create the configuration file if VS Code asks you to do so.
-5. Add the Figma server:
+2. Confirm that the desktop MCP server is enabled in Figma Dev Mode.
+3. Open the Command Palette with `Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows and Linux.
+4. Run **MCP: Add Server**.
+5. Choose **HTTP**.
+6. Enter `http://127.0.0.1:3845/mcp`.
+7. Name the server `figma-desktop` and add it to this workspace.
+
+The resulting workspace configuration should look similar to:
 
 ```json
 {
   "inputs": [],
   "servers": {
-    "figma": {
+    "figma-desktop": {
       "type": "http",
-      "url": "https://mcp.figma.com/mcp"
+      "url": "http://127.0.0.1:3845/mcp"
     }
   }
 }
 ```
 
-6. Click **Start** above the Figma server in the editor.
-7. Complete the Figma authentication flow and click **Allow access**.
-8. Open Copilot Chat and switch to **Agent** mode.
-9. Open the tools picker and confirm that Figma tools are available.
+8. Click **Start** above the Figma server in the editor.
+9. Open Copilot Chat and switch to **Agent** mode.
+10. Open the tools picker and confirm that Figma tools are available.
 
 The workspace configuration applies only to this repository. If you want to use Figma MCP in every VS Code workspace, run **MCP: Open User Configuration** instead.
 
-See [Figma's remote MCP setup guide](https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/#vs-code) for the latest VS Code instructions.
-
 #### Use Figma context in Copilot Chat
 
-The remote server is link-based. In Figma, right-click the smallest relevant frame or layer, choose **Copy link to selection**, and include that URL in your Copilot prompt.
+The desktop server is selection-based. Select the smallest relevant frame or layer in the Figma desktop app, then prompt Copilot:
 
 ```text
-Use the Figma MCP tools to inspect this frame: <FIGMA_URL>
+Use the Figma MCP tools to inspect my current Figma selection.
 
 Implement it in this Nuxt and Vue 3 playground. Inspect the repository before
 editing. Reuse existing Ind components, do not add or use Tailwind in
@@ -122,25 +109,11 @@ summarize the changed files when finished.
 
 Keep the relevant page open in the editor when prompting. You can also attach or mention specific workspace files in Copilot Chat to narrow the task, for example `app/pages/index.vue`.
 
-#### Use the desktop Figma server with VS Code
-
-If you prefer selection-based prompting:
-
-1. Enable the desktop MCP server in Figma Dev Mode.
-2. In VS Code, run **MCP: Add Server**.
-3. Choose **HTTP**.
-4. Enter `http://127.0.0.1:3845/mcp`.
-5. Name it `figma-desktop` and add it to this workspace.
-6. Start the server, select a frame in the Figma desktop app, and prompt Copilot in Agent mode.
-
-Keep the Figma desktop app open while using this connection. Do not configure both remote and desktop servers with the same name.
-
 #### Troubleshoot VS Code and Copilot
 
 - If **MCP** commands are missing, update VS Code and the GitHub Copilot extension.
 - If Figma tools do not appear, start the server from the MCP configuration and reopen Copilot Chat.
-- If authentication expired, stop and restart the Figma server, then authenticate again.
-- If Copilot does not call Figma automatically, say “Use the Figma MCP tools” and include a link to a specific Figma node.
+- If Copilot does not call Figma automatically, say “Use the Figma MCP tools to inspect my current selection.”
 - If the desktop server cannot connect, confirm that Figma desktop is open and that its MCP server is enabled.
 - If Copilot proposes React or Tailwind, restate that the target is Nuxt with Vue 3, existing `Ind` components, and regular scoped CSS.
 
@@ -149,8 +122,8 @@ Keep the Figma desktop app open while using this connection. Do not configure bo
 Start small. A single component, form section, or mobile frame gives the agent clearer context than an entire application.
 
 1. Run the playground with `npm run dev`.
-2. In Figma, select the relevant frame or layer and choose **Copy link to selection**.
-3. Open a Codex task for this repository and paste the Figma URL.
+2. In the Figma desktop app, select the relevant frame or layer.
+3. Open a Codex task for this repository and ask it to inspect your current Figma selection.
 4. State the target file, framework, and constraints explicitly.
 5. Ask Codex to inspect the repository and design before making changes.
 6. Let Codex implement and verify the result.
@@ -160,7 +133,7 @@ Start small. A single component, form section, or mobile frame gives the agent c
 For example:
 
 ```text
-Inspect this Figma frame: <FIGMA_URL>
+Use the Figma MCP tools to inspect my current Figma selection.
 
 Implement it on the playground page using Nuxt, Vue 3 and the existing
 Independer Design System components. First inspect the repository and Figma
@@ -175,16 +148,16 @@ then run the production build and summarize the files you changed.
 ### Understand a design before coding
 
 ```text
-Analyse this Figma frame: <FIGMA_URL>. Do not edit files yet. Describe its
-structure, reusable design-system components, responsive behavior, states,
-assets, and any details that are ambiguous or missing.
+Analyse my current Figma selection using the Figma MCP tools. Do not edit files
+yet. Describe its structure, reusable design-system components, responsive
+behavior, states, assets, and any details that are ambiguous or missing.
 ```
 
 ### Implement one section
 
 ```text
-Implement only the form section from this Figma frame in app/pages/index.vue:
-<FIGMA_URL>. Use existing Ind components and Vue conventions. Do not use
+Implement only the selected Figma form section in app/pages/index.vue. Use
+the Figma MCP tools, existing Ind components and Vue conventions. Do not use
 Tailwind classes in application code. Add minimal scoped CSS where necessary.
 Run the build when finished.
 ```
@@ -192,7 +165,7 @@ Run the build when finished.
 ### Compare code with Figma
 
 ```text
-Compare the current playground page with this Figma frame: <FIGMA_URL>.
+Compare the current playground page with my current Figma selection.
 Inspect both before editing. List the visual and behavioral differences, then
 fix the meaningful differences without replacing existing Ind components.
 Verify the result in the browser at mobile and desktop widths.
@@ -203,7 +176,7 @@ Verify the result in the browser at mobile and desktop widths.
 ```text
 Review the current changes as production code. Check component reuse,
 accessibility, responsive behavior, duplicated CSS, TypeScript issues, and
-whether the implementation matches the linked Figma frame. Do not change
+whether the implementation matches the selected Figma frame. Do not change
 anything; report findings by severity with file and line references.
 ```
 
@@ -219,7 +192,7 @@ the button or input APIs. Verify the page again when finished.
 
 Good results depend more on clear context than on a long prompt. Include:
 
-- a link to the smallest relevant Figma frame or layer;
+- the smallest relevant frame or layer selected in the Figma desktop app;
 - the page or component that may be changed;
 - whether the task is analysis, implementation, or review;
 - required states such as loading, disabled, validation, empty, and error;
@@ -250,15 +223,15 @@ If the agent starts changing too much, stop it and narrow the task. A good corre
 
 ### Codex cannot access the Figma file
 
-- Confirm that the Figma plugin is installed and authenticated.
-- Confirm that your Figma account has access to the linked file.
-- Paste a link to the specific frame or layer, not just a screenshot.
-- Start a new task after installing or reconnecting the plugin.
+- Confirm that the Figma desktop app is open.
+- Confirm that the desktop MCP server is enabled in Dev Mode.
+- Confirm that your coding assistant is connected to `http://127.0.0.1:3845/mcp`.
+- Restart the coding assistant after adding or reconnecting the server.
 
 ### The wrong frame is used
 
-- Right-click the intended frame or layer in Figma and select **Copy link to selection**.
-- Check that the URL contains a node identifier.
+- Select the intended frame or layer in the Figma desktop app before prompting.
+- Confirm that only the relevant layer or frame is selected.
 - Use a smaller nested frame when the page is large or complex.
 
 ### The output looks like React or Tailwind
@@ -274,7 +247,7 @@ Figma context can resemble web or React code, but it is not the required output 
 
 ### The request is slow or returns too much context
 
-Link a smaller frame or individual component. Large pages and broad requests consume more context and make it harder for the agent to identify the intended hierarchy.
+Select a smaller frame or individual component. Large pages and broad requests consume more context and make it harder for the agent to identify the intended hierarchy.
 
 ## Using design-system components
 
