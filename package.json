@@ -10,8 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "independer-design-system": "^1.2.0",
+    "@tailwindcss/vite": "^4.3.2",
+    "independer-design-system": "^1.2.1",
     "nuxt": "^4.4.8",
+    "tailwindcss": "^4.3.2",
     "vue": "^3.5.39",
     "vue-router": "^5.1.0"
   }

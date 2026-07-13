@@ -6,5 +6,14 @@
         <Icon name="eva:info-outline" class="size-6" />
         Change this file to get started.
     </div>
+
+    <div class="flex flex-col gap-6 mt-6">
+        <IndFormInput v-model="name" name="name" label="Naam" />
+        <IndButton label="Klik hier" tone="filled-yellow" @click="() => console.log('Button clicked!')" />
+    </div>
   </div>
 </template>
+
+<script setup>
+const name = ref('');
+</script>
